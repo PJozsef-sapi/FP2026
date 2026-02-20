@@ -105,3 +105,45 @@ fact3 res n
     | otherwise = fact3 (res*n) (n-1)
 
 -- LEFT TO DO: I-14, II
+
+-- 14. Calculate x^n, n > 0.
+
+-- METHOD 1
+mypow1 :: (Fractional a, Integral b) => a -> b -> a
+mypow1 x n = if n > 0 then x^n else error "The exponent must be a positive integer."
+
+-- METHOD 2
+mypow2 :: (Fractional a, Integral b) => a -> b -> a
+mypow2 x n
+    | n < 0 = error "The exponent must be a positive integer."
+    | n == 0 = 1
+    | n == 1 = x
+    | otherwise = x * mypow2 x (n-1)
+
+-- METHOD 3
+
+-- PART II
+
+-- 1. Calculate the square roots of the first n numbers.
+firstNsqrt :: (Enum a, Floating a) => a -> [a]
+firstNsqrt n = [sqrt a | a <- [1..n]]
+
+-- 2. Calculate the first n perfect squares.
+firstNPS :: (Num a, Enum a) => a -> [a]
+firstNPS n = [n^2 | n <- [1..n]]
+
+-- 3. Calculate the first n cubed integers.
+firstNcubes :: (Num a, Enum a) => a -> [a]
+firstNcubes n = [n^3 | n <- [1..n]]
+
+-- 4. Get the first n numbers that are not perfect squares. TBA (To Be Added)
+
+-- 5. Get the first n powers of x.
+xpow1ton :: (Num a, Integral b) => a -> b -> [a]
+xpow1ton x n = [x^a | a <- [1..n]]
+
+-- 6. Get the even divisors of a number.
+evendiv :: Integral a => a -> [a]
+evendiv x = [a | a <- [1..x], mod x a == 0, even a]
+
+-- 7-13 TBA
