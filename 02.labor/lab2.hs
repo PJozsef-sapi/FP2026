@@ -1,16 +1,18 @@
+-- PART I --
+
 -- 1. Calculate the digit's product.
 
 -- METHOD 1
 digitprod :: Integral a => a -> a
 digitprod n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitprod (abs n)
     | n < 10 = n
     | otherwise = mod n 10 * digitprod (div n 10)
 
 -- METHOD 2
 digitprod2 :: Integral a => a -> a
 digitprod2 n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitprod2 (abs n)
     | otherwise = helper n 1
     where
         helper 0 acc = acc
@@ -21,14 +23,14 @@ digitprod2 n
 -- METHOD 1
 digitsum :: Integral a => a -> a
 digitsum n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitsum (abs n)
     | n < 10 = n
     | otherwise = mod n 10 + digitsum (div n 10)
 
 -- METHOD 2
 digitsum2 :: Integral a => a -> a
 digitsum2 n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitsum2 (abs n)
     | otherwise = helper n 0
     where
         helper 0 acc = acc
@@ -39,14 +41,14 @@ digitsum2 n
 -- METHOD 1
 digitamount :: Integral a => a -> a
 digitamount n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitamount (abs n)
     | n < 10 = 1
     | otherwise = 1 + digitamount (div n 10)
 
 -- METHOD 2
 digitamount2 :: Integral a => a -> a
 digitamount2 n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = digitamount2 (abs n)
     | n == 0 = 1
     | otherwise = helper n 0
     where
@@ -57,7 +59,7 @@ digitamount2 n
 
 sumSpecified :: Integral a => a -> a -> a
 sumSpecified n d
-    | n < 0 = error "Argument 1 cannot be negative."
+    | n < 0 = sumSpecified (abs n) d
     | d < 0 || d > 9 = error "Argument 2 is not a digit."
     | n == 0 = 0
     | mod n 10 == d = d + sumSpecified (div n 10) d
@@ -67,7 +69,7 @@ sumSpecified n d
 
 amountEvenDigits :: Integral a => a -> a
 amountEvenDigits n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = amountEvenDigits (abs n)
     | n < 10 = if even n then 1 else 0
     | even (mod n 10) = 1 + amountEvenDigits (div n 10)
     | otherwise = amountEvenDigits (div n 10)
@@ -76,7 +78,7 @@ amountEvenDigits n
 
 largestDigit :: Integral a => a -> a
 largestDigit n
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = largestDigit (abs n)
     | n < 10 = n
     | otherwise = max (mod n 10) (largestDigit (div n 10))
 
@@ -84,7 +86,7 @@ largestDigit n
 
 countDigitBase :: Integral a => a -> a -> a -> a
 countDigitBase n b d
-    | n < 0 = error "Input cannot be negative."
+    | n < 0 = countDigitBase (abs n) b d
     | b < 2 = error "Base must be at least 2."
     | d < 0 || d > b = error "Digit not valid in specified base."
     | n == 0 = 0
@@ -100,3 +102,17 @@ fibonacci n
     where
         helper 0 a _ = a
         helper k a b = helper (k-1) b (a+b)
+
+-- PART II
+
+-- 1. Calculate the products of numbers' digits.
+
+digitprodII :: [Int] -> [Int]
+digitprodII = map digitprod
+
+-- 2. Calculate the sums of numbers' digits.
+
+digitsumII :: [Int] -> [Int]
+digitsumII = map digitsum
+
+-- yada yada similar stuff continues I suppose
