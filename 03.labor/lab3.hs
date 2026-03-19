@@ -4,10 +4,10 @@ atlag :: (Floating a) => [a] -> a
 atlag ls = sum ls / fromIntegral (length ls)
 
 {-
-    PART II + III
-    Map tests can be found below the functions they test as t# .
-    Each exercise is numbered.
--}
+ -  PART II + III
+ -  Map tests can be found below the functions they test as t# .
+ -  Each exercise is numbered.
+ -}
 
 -- 1. Determine the length of an array.
 
@@ -93,6 +93,9 @@ myConcat :: [a] -> [a] -> [a]
 myConcat [] ys = ys
 myConcat (x:xs) ys = x : myConcat xs ys
 
+t6 :: [[Integer]]
+t6 = map (uncurry myConcat) [([1, 2], [3, 4]), ([5, 6], [7, 8])]
+
 -- 7. Check if a list is a palindrome. A palindrome list means it's the same way backwards as it is forwards.
 
 -- METHOD 1 WITH HELPER: myReverse to reverse the list
@@ -109,6 +112,9 @@ isPalindrome2 [] = True
 isPalindrome2 [_] = True
 isPalindrome2 arr = head arr == last arr && isPalindrome ((init . tail) arr)
 
+t7 :: [Bool]
+t7 = map isPalindrome2 [[], [1, 2, 3, 4, 3, 2, 1], [1, 2, 3]]
+
 -- 8. Turn an integer into a list of digits.
 
 itol :: Integral a => a -> [a]
@@ -117,10 +123,16 @@ itol n
     | n < 10 = [n]
     | otherwise = itol (div n 10) ++ [mod n 10]
 
+t8 :: [[Integer]]
+t8 = map itol [1982, 3298, 29837429874, 23]
+
 -- 9. Requeue the head of a list.
 
 requeue :: [a] -> [a]
 requeue (head:tail) = tail ++ [head]
+
+t9 :: [[Float]]
+t9 = map requeue [[1.2, 3.4], [10.293872, 8.328, 9.2938729]]
 
 -- 10. Get the average of an integer list's elements.
 
@@ -132,6 +144,9 @@ listAVG arr
         mySum [] = 0
         mySum (head:tail) = head + mySum tail
 
+t10 :: [Double]
+t10 = map listAVG [[1, 2, 3, 4], [23, 7832, 29372937]]
+
 -- 11. Convert a base 10 integer to base 'base'.
 
 toBase :: Integral a => a -> a -> [a]
@@ -141,6 +156,9 @@ toBase base number = reverse $ go number
         go 0 = []
         go n = mod n base : go (div n base)
 
+t11 :: [[Integer]]
+t11 = map (uncurry toBase) [(2, 9237), (16, 35), (64, 9218283)]
+
 -- 12. Convert an integer from base 'base' to base 10.
 
 fromBase :: Integral a => a -> [a] -> a
@@ -148,3 +166,26 @@ fromBase base digits = go (reverse digits) 0
     where
         go [] _ = 0
         go (head:tail) pos = head * base^pos + go tail (pos+1)
+
+t12 :: [Integer]
+t12 = map (uncurry fromBase) [(2, [0, 1, 0, 0, 1, 1, 0]), (8, [3, 7, 3, 5, 1, 0, 4, 3])]
+
+-- PART IV Find the Substitution value of a polynomial at a given value.
+
+horner :: Num a => [a] -> a -> a
+horner [head] _ = head
+horner (head:tail) val = horner tail val + head * val ^ length tail
+
+-- PART 5 Find the closest point in a list to a given point.
+
+type Point a = (a, a)
+
+distance :: Floating a => Point a -> Point a -> a
+distance (x1, y1) (x2, y2) = sqrt ((x2-x1)^2 + (y2-y1)^2)
+
+mindist :: (Floating a, Ord a) => Point a -> [Point a] -> Point a
+mindist p [x] = x
+mindist p (head:tail)
+    | distance p head < distance p best = head
+    | otherwise                         = best
+    where best = mindist p tail
